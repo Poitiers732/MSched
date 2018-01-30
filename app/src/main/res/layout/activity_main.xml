@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.wzdrodowski.msched.MainActivity">
+
+
+    <EditText
+        android:id="@+id/foodTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="ENTER FOOD"
+        android:inputType="textPersonName" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/proteinTxt"
+            android:layout_width="141dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="PROTEIN"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/carbsTxt"
+            android:layout_width="142dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="CARBS"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/fatTxt"
+            android:layout_width="142dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="FAT"
+            android:inputType="textPersonName" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAddFood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add food" />
+
+    <ListView
+        android:id="@+id/foodList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
