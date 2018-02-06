@@ -11,6 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Select;
 import com.example.wzdrodowski.msched.model.Food;
 
 import java.util.ArrayList;
@@ -22,58 +24,85 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText proteinTxt;   EditText carbsTxt;   EditText fatTxt;
     Button btnAddFood;
     Food food;
-    ListView foodList;
+    ListView foodListView;
     ArrayList<String> arrayList;
-    ArrayAdapter<String> adapter;
+    ArrayAdapter<Food> adapter;
 
     //list_item
-    LinearLayout listView;
+    ListView listView;
     TextView liName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActiveAndroid.initialize(this);
         foodTxt = (EditText)findViewById(R.id.foodTxt);
         proteinTxt = (EditText)findViewById(R.id.proteinTxt);
         carbsTxt = (EditText)findViewById(R.id.carbsTxt);
         fatTxt = (EditText)findViewById(R.id.fatTxt);
-        foodList = (ListView)findViewById(R.id.foodList);
 
         btnAddFood = (Button)findViewById(R.id.btnAddFood);
         btnAddFood.setOnClickListener(this);
 
-        listView = (LinearLayout)findViewById(R.id.listItem);
-        arrayList = new ArrayList<String>();
+        listView = (ListView)findViewById(R.id.foodList);
 
-        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, arrayList);
-        foodList.setAdapter(adapter);
+
+        List<Food>storedFood = Food.getAllFood();
 
     }
+
+    public static List<Food> getAll() {
+        return new Select("food_name")
+                .from(Food.class)
+                .orderBy("food_name ASC")
+                .execute();
+    }
+
+    public void displayFood(View view){
+        arrayList = new ArrayList<>();
+
+        List<Food> foodList = getAll();
+
+        for(int i=0;i<=foodList.size();i++){
+         food = foodList.get(i);
+         arrayList.add(food.getFoodName());
+        }
+
+        adapter = new ArrayAdapter<Food>(getApplicationContext(),android.R.layout.simple_list_item_1);
+        listView.setAdapter(adapter);
+    }
+
 
     @Override
     public void onClick(View view) {
         food = new Food();
 
-        String food_name = foodTxt.getText().toString();
-        int protein = Integer.parseInt(proteinTxt.getText().toString());
-        int carbs = Integer.parseInt(carbsTxt.getText().toString());
-        int fat = Integer.parseInt(fatTxt.getText().toString());
+        if(foodTxt.getText().equals("") || proteinTxt.getText().toString().equals("") || carbsTxt.getText().equals("") || fatTxt.getText().equals("")) {
+            Toast.makeText(getApplicationContext(), "Field can't be empty", Toast.LENGTH_SHORT).show();
+        }
+        else {
 
-        food.setFoodName(food_name);
-        food.setProteinAmount(protein);
-        food.setCarbsAmount(carbs);
-        food.setFatAmount(fat);
+            String food_name = foodTxt.getText().toString();
+            int protein = Integer.parseInt(proteinTxt.getText().toString());
+            int carbs = Integer.parseInt(carbsTxt.getText().toString());
+            int fat = Integer.parseInt(fatTxt.getText().toString());
+            food.setFoodName(food_name);
+            food.setProteinAmount(protein);
+            food.setCarbsAmount(carbs);
+            food.setFatAmount(fat);
+            food.setCurrentDate();
+            Toast.makeText(getApplicationContext(), "Inserted Successfully", Toast.LENGTH_SHORT).show();
+            foodTxt.setText("");    proteinTxt.setText("");    carbsTxt.setText("");    fatTxt.setText("");
 
-        arrayList.add(foodTxt.getText().toString());
-        adapter.notifyDataSetChanged();
+//        arrayList.add(foodTxt.getText().toString());
+//        adapter.notifyDataSetChanged();
 
-        food.save();
-        Toast.makeText(getApplicationContext(), "Inserted Successfully", Toast.LENGTH_SHORT).show();
-        foodTxt.setText("");    proteinTxt.setText("");    carbsTxt.setText("");    fatTxt.setText("");
-        //foodTxt.requestFocus();
+            food.save();
+        }
 
-        view.clearFocus();
+
+        foodTxt.clearFocus();
 
     }
 }
