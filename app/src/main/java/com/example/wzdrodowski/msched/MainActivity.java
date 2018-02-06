@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.example.wzdrodowski.msched.model.Food;
 
@@ -27,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btnAddFood;
     Food food;
     ListView foodListView;
-    ArrayList<String> arrayList;
-    ArrayAdapter<String> adapter;
+    ArrayList<Food> arrayList;
+    ArrayAdapter<Food> adapter;
 
     //list_item
     ListView foodItem;
@@ -55,10 +56,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for(int i=0; i<foodList.size(); i++){
             food = foodList.get(i);
-            arrayList.add(food.getFoodName());
+            arrayList.add(food);
         }
 
-        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
+//        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
+        adapter = new Adapter(this, arrayList);
+
+
         foodItem.setAdapter(adapter);
         //
 
@@ -80,6 +84,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .execute();
     }
 
+    public static List<Food> deleteAll() {
+        return new Delete()
+                .from(Food.class)
+                .execute();
+    }
+
      public static List<Food> getByDateDesc() {
         return new Select()
                 .from(Food.class)
@@ -93,10 +103,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for(int i=0; i<foodList.size(); i++){
             food = foodList.get(i);
-            arrayList.add(food.getFoodName());
+            arrayList.add(food);
         }
 
-        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
+//        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
+          adapter = new Adapter(this, arrayList);
         foodItem.setAdapter(adapter);
     }
 
@@ -106,10 +117,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for(int i=0; i<foodList.size(); i++){
             food = foodList.get(i);
-            arrayList.add(food.getFoodName());
+            arrayList.add(food);
         }
 
-        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
+//        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
+        adapter = new Adapter(this, arrayList);
         foodItem.setAdapter(adapter);
     }
 
@@ -155,10 +167,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for(int i=0; i<foodList.size(); i++){
             food = foodList.get(i);
-            arrayList.add(food.getFoodName());
+            arrayList.add(food);
         }
 
-        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
+        //        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
+        adapter = new Adapter(this, arrayList);
         foodItem.setAdapter(adapter);
         //
 

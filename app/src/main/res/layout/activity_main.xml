@@ -82,6 +82,13 @@
             android:text="Sort by name"
             android:onClick="sortByName" />
 
+        <Button
+            android:id="@+id/btnDeleteAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DELETE ALL"
+            android:onClick="deleteAll" />
+
     </LinearLayout>
 
     <ListView
