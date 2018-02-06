@@ -72,8 +72,8 @@ public class Food extends Model {
         this.foodName = foodName;
     }
 
-    public static List<Food>getAllFood(){
-        return new Select("food_name").from(Food.class).execute();
-    }
+//    public static List<Food>getAllFood(){
+//        return new Select("food_name").from(Food.class).execute();
+//    }
 
 }

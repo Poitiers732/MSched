@@ -1,12 +1,14 @@
 package com.example.wzdrodowski.msched;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,10 +28,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Food food;
     ListView foodListView;
     ArrayList<String> arrayList;
-    ArrayAdapter<Food> adapter;
+    ArrayAdapter<String> adapter;
 
     //list_item
-    ListView listView;
+    ListView foodItem;
     TextView liName;
 
     @Override
@@ -45,37 +47,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnAddFood = (Button)findViewById(R.id.btnAddFood);
         btnAddFood.setOnClickListener(this);
 
-        listView = (ListView)findViewById(R.id.foodList);
+        foodItem = (ListView)findViewById(R.id.foodList);
+
+        //displayFood();
+        arrayList = new ArrayList<>();
+        List<Food> foodList = getAll();
+
+        for(int i=0; i<foodList.size(); i++){
+            food = foodList.get(i);
+            arrayList.add(food.getFoodName());
+        }
+
+        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
+        foodItem.setAdapter(adapter);
 
 
-        List<Food>storedFood = Food.getAllFood();
+        //List<Food>storedFood = Food.getAll();
 
     }
 
     public static List<Food> getAll() {
-        return new Select("food_name")
+        return new Select()
                 .from(Food.class)
                 .orderBy("food_name ASC")
                 .execute();
     }
 
-    public void displayFood(View view){
-        arrayList = new ArrayList<>();
+    public void hideKeyboard(){
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        List<Food> foodList = getAll();
-
-        for(int i=0;i<=foodList.size();i++){
-         food = foodList.get(i);
-         arrayList.add(food.getFoodName());
-        }
-
-        adapter = new ArrayAdapter<Food>(getApplicationContext(),android.R.layout.simple_list_item_1);
-        listView.setAdapter(adapter);
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
+    public void displayFood(View view) {
+        hideKeyboard();
+        arrayList = new ArrayList<>();
+        List<Food> foodList = getAll();
+
+        for(int i=0; i<foodList.size(); i++){
+            food = foodList.get(i);
+            arrayList.add(food.getFoodName());
+        }
+
+        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
+        foodItem.setAdapter(adapter);
+
+        Toast.makeText(getApplicationContext(), "displayFood", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onClick(View view) {
+        hideKeyboard();
         food = new Food();
 
         if(foodTxt.getText().equals("") || proteinTxt.getText().toString().equals("") || carbsTxt.getText().equals("") || fatTxt.getText().equals("")) {
@@ -101,8 +125,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             food.save();
         }
 
-
-        foodTxt.clearFocus();
+        foodItem.requestFocus();
+        //foodTxt.clearFocus();
 
     }
 }

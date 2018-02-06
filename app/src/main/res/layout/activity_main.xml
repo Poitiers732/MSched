@@ -56,9 +56,18 @@
         android:layout_height="wrap_content"
         android:text="Add food" />
 
+    <Button
+        android:id="@+id/btnShowFood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show food"
+        android:onClick="displayFood" />
+
     <ListView
         android:id="@+id/foodList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="#909090"
+        />
 
 </LinearLayout>
