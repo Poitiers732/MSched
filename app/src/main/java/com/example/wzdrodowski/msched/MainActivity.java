@@ -60,10 +60,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
         foodItem.setAdapter(adapter);
-
+        //
 
         //List<Food>storedFood = Food.getAll();
 
+    }
+
+    public void loseFocus(){
+        foodTxt.clearFocus();
+        proteinTxt.clearFocus();
+        carbsTxt.clearFocus();
+        fatTxt.clearFocus();
     }
 
     public static List<Food> getAll() {
@@ -73,16 +80,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .execute();
     }
 
-    public void hideKeyboard(){
-        InputMethodManager inputManager = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+     public static List<Food> getByDateDesc() {
+        return new Select()
+                .from(Food.class)
+                .orderBy("date DESC")
+                .execute();
     }
 
-    public void displayFood(View view) {
-        hideKeyboard();
+      public void sortByName(View view) {
         arrayList = new ArrayList<>();
         List<Food> foodList = getAll();
 
@@ -93,8 +98,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
         foodItem.setAdapter(adapter);
+    }
 
-        Toast.makeText(getApplicationContext(), "displayFood", Toast.LENGTH_SHORT).show();
+    public void sortByDate(View view) {
+        arrayList = new ArrayList<>();
+        List<Food> foodList = getByDateDesc();
+
+        for(int i=0; i<foodList.size(); i++){
+            food = foodList.get(i);
+            arrayList.add(food.getFoodName());
+        }
+
+        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
+        foodItem.setAdapter(adapter);
+    }
+
+    public void hideKeyboard(){
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override
@@ -125,7 +149,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             food.save();
         }
 
-        foodItem.requestFocus();
+        //displayFood();
+        arrayList = new ArrayList<>();
+        List<Food> foodList = getAll();
+
+        for(int i=0; i<foodList.size(); i++){
+            food = foodList.get(i);
+            arrayList.add(food.getFoodName());
+        }
+
+        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
+        foodItem.setAdapter(adapter);
+        //
+
+        //foodItem.requestFocus();
         //foodTxt.clearFocus();
 
     }

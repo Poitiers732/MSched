@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.wzdrodowski.msched.MainActivity">
+    tools:context="com.example.wzdrodowski.msched.MainActivity"
+    android:focusableInTouchMode="true"
+    >
 
 
     <EditText
@@ -14,7 +16,10 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="ENTER FOOD"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,12 +61,28 @@
         android:layout_height="wrap_content"
         android:text="Add food" />
 
-    <Button
-        android:id="@+id/btnShowFood"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Show food"
-        android:onClick="displayFood" />
+        android:gravity="center"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSortByDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sort by date"
+            android:onClick="sortByDate" />
+
+        <Button
+            android:id="@+id/btnSortByName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sort by name"
+            android:onClick="sortByName" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/foodList"
