@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ListView foodListView;
     ArrayList<Food> arrayList;
     ArrayAdapter<Food> adapter;
+    Button btnDeleteAll;
 
     //list_item
     ListView foodItem;
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         foodItem = (ListView)findViewById(R.id.foodList);
 
+        btnDeleteAll = (Button) findViewById(R.id.btnDeleteAll);
+
         //displayFood();
         arrayList = new ArrayList<>();
         List<Food> foodList = getAll();
@@ -59,18 +62,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             arrayList.add(food);
         }
 
-//        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
         adapter = new Adapter(this, arrayList);
-
 
         foodItem.setAdapter(adapter);
         //
 
         //List<Food>storedFood = Food.getAll();
 
+        btnDeleteAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteAll();
+                sortByName(view);
+            }
+        });
+
     }
 
-    public void loseFocus(){
+    public void clearFocuses(){
         foodTxt.clearFocus();
         proteinTxt.clearFocus();
         carbsTxt.clearFocus();
@@ -90,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .execute();
     }
 
+
      public static List<Food> getByDateDesc() {
         return new Select()
                 .from(Food.class)
@@ -106,8 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             arrayList.add(food);
         }
 
-//        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
-          adapter = new Adapter(this, arrayList);
+        adapter = new Adapter(this, arrayList);
         foodItem.setAdapter(adapter);
     }
 
@@ -120,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             arrayList.add(food);
         }
 
-//        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
         adapter = new Adapter(this, arrayList);
         foodItem.setAdapter(adapter);
     }
@@ -137,12 +145,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         hideKeyboard();
         food = new Food();
+        boolean showToastWrongData = false;
+
+        if(!proteinTxt.getText().toString().matches("-?\\d+")){
+            showToastWrongData = true;
+            proteinTxt.setText("");
+        }
+
+        if(!carbsTxt.getText().toString().matches("-?\\d+")){
+            showToastWrongData = true;
+            carbsTxt.setText("");
+        }
+
+        if(!fatTxt.getText().toString().matches("-?\\d+")){
+            showToastWrongData = true;
+            fatTxt.setText("");
+        }
 
         if(foodTxt.getText().equals("") || proteinTxt.getText().toString().equals("") || carbsTxt.getText().equals("") || fatTxt.getText().equals("")) {
             Toast.makeText(getApplicationContext(), "Field can't be empty", Toast.LENGTH_SHORT).show();
+            showToastWrongData = false;
         }
-        else {
 
+        else if(showToastWrongData){
+            Toast.makeText(getApplicationContext(), "Wrong data, use numbers", Toast.LENGTH_SHORT).show();
+        }
+
+        else {
             String food_name = foodTxt.getText().toString();
             int protein = Integer.parseInt(proteinTxt.getText().toString());
             int carbs = Integer.parseInt(carbsTxt.getText().toString());
@@ -154,9 +183,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             food.setCurrentDate();
             Toast.makeText(getApplicationContext(), "Inserted Successfully", Toast.LENGTH_SHORT).show();
             foodTxt.setText("");    proteinTxt.setText("");    carbsTxt.setText("");    fatTxt.setText("");
-
-//        arrayList.add(foodTxt.getText().toString());
-//        adapter.notifyDataSetChanged();
 
             food.save();
         }
@@ -170,13 +196,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             arrayList.add(food);
         }
 
-        //        adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
         adapter = new Adapter(this, arrayList);
         foodItem.setAdapter(adapter);
         //
 
-        //foodItem.requestFocus();
-        //foodTxt.clearFocus();
+        clearFocuses();
 
     }
 }

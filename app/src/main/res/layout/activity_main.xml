@@ -86,8 +86,58 @@
             android:id="@+id/btnDeleteAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DELETE ALL"
-            android:onClick="deleteAll" />
+            android:text="DELETE ALL" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:gravity="left"
+        android:orientation="horizontal"
+        android:paddingBottom="6dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#CCBF3B"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:text="Name"
+            android:textColor="#000"
+            android:textSize="12dp" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="#159AB8"
+            android:gravity="center"
+            android:paddingHorizontal="6dp"
+            android:text="Protein"
+            android:textColor="#000"
+            android:textSize="12dp" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="#B2B093"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:text="Carbs"
+            android:textColor="#000"
+            android:textSize="12dp" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="#FFA6C9"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:text="Fat"
+            android:textColor="#000"
+            android:textSize="12dp" />
 
     </LinearLayout>
 
