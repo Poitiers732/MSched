@@ -18,7 +18,9 @@ import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.example.wzdrodowski.msched.model.Food;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -31,6 +33,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<Food> arrayList;
     ArrayAdapter<Food> adapter;
     Button btnDeleteAll;
+    Calendar cld;
+    String cldString;
+    Button btnPrevious;
+    Button btnNext;
+
+    TextView calendar;
 
     //list_item
     ListView foodItem;
@@ -45,13 +53,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         proteinTxt = (EditText)findViewById(R.id.proteinTxt);
         carbsTxt = (EditText)findViewById(R.id.carbsTxt);
         fatTxt = (EditText)findViewById(R.id.fatTxt);
-
         btnAddFood = (Button)findViewById(R.id.btnAddFood);
         btnAddFood.setOnClickListener(this);
-
         foodItem = (ListView)findViewById(R.id.foodList);
-
         btnDeleteAll = (Button) findViewById(R.id.btnDeleteAll);
+        btnPrevious = (Button) findViewById(R.id.btnPrevious); btnNext = (Button) findViewById(R.id.btnNext);
+        calendar = (TextView) findViewById(R.id.calendar);
 
         //displayFood();
         arrayList = new ArrayList<>();
@@ -77,6 +84,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        btnPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar.setText(getPreviousDate());
+            }
+        });
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar.setText(getNextDate());
+            }
+        });
+
+        calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar.setText(getCurrentDate());
+            }
+        });
+
+        calendar.setText(getCurrentDate());
+
+    }
+
+    public String getPreviousDate(){
+        cld.add(Calendar.DAY_OF_MONTH, -1);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String currentTime = sdf.format(cld.getTime());
+        cldString = currentTime;
+        return currentTime;
+    }
+
+    public String getNextDate(){
+        cld.add(Calendar.DAY_OF_MONTH, 1);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String currentTime = sdf.format(cld.getTime());
+        cldString = currentTime;
+        return currentTime;
+    }
+
+    public String getCurrentDate(){
+        cld = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String currentTime = sdf.format(cld.getTime());
+        cldString = currentTime;
+        return currentTime;
     }
 
     public void clearFocuses(){

@@ -93,6 +93,40 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/btnPrevious"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="PREVIOUS" />
+
+        <TextView
+            android:id="@+id/calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="xxx"
+            android:layout_weight="2"
+            android:textColor="#000"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="NEXT" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:gravity="left"
         android:orientation="horizontal"
@@ -141,11 +175,11 @@
 
     </LinearLayout>
 
+
     <ListView
         android:id="@+id/foodList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#909090"
-        />
+        android:layout_height="wrap_content"
+        android:background="#909090" />
 
 </LinearLayout>
