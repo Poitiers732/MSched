@@ -39,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btnNext;
 
     TextView calendar;
+    TextView protTotal;
+    TextView carbsTotal;
+    TextView fatTotal;
 
     //list_item
     ListView foodItem;
@@ -59,6 +62,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnDeleteAll = (Button) findViewById(R.id.btnDeleteAll);
         btnPrevious = (Button) findViewById(R.id.btnPrevious); btnNext = (Button) findViewById(R.id.btnNext);
         calendar = (TextView) findViewById(R.id.calendar);
+        protTotal = (TextView) findViewById(R.id.protTotal);
+        carbsTotal = (TextView) findViewById(R.id.carbsTotal);
+        fatTotal = (TextView) findViewById(R.id.fatTotal);
 
         //displayFood();
         arrayList = new ArrayList<>();
@@ -152,7 +158,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .from(Food.class)
                 .execute();
     }
-
 
      public static List<Food> getByDateDesc() {
         return new Select()
