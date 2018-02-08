@@ -1,5 +1,7 @@
 package com.example.wzdrodowski.msched.model;
 
+import android.database.sqlite.SQLiteOpenHelper;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -28,6 +30,23 @@ public class Food extends Model {
 
     @Column(name = "date")
     private String date;
+
+    @Column(name = "picked_date")
+
+    private String pickedDate;
+
+
+    public void setPickedDate(String pickedDate) {
+        this.pickedDate = pickedDate;
+    }
+
+    public String getPickedDate() {
+        return pickedDate;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getDate() {
         return date;
@@ -71,9 +90,5 @@ public class Food extends Model {
     public void setFoodName(String foodName) {
         this.foodName = foodName;
     }
-
-//    public static List<Food>getAllFood(){
-//        return new Select("food_name").from(Food.class).execute();
-//    }
 
 }

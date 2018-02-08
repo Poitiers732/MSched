@@ -1,9 +1,5 @@
 package com.example.wzdrodowski.msched;
 
-/**
- * Created by wzdrodowski on 2018-02-01.
- */
-
 public class Item {
     private String food_name;
     private int protein;

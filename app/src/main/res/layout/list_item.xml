@@ -16,9 +16,10 @@
         android:text="TextView"
         android:textSize="18dp"
         android:gravity="center"
-        android:background="#CCBF3B"
+        android:background="@color/colorPrimary"
+        android:alpha="0.7"
         android:layout_weight="1"
-        android:textColor="#000" />
+        android:textColor="#FFF" />
 
     <!--<TextView-->
         <!--android:id="@+id/p"-->
@@ -34,14 +35,14 @@
 
     <TextView
         android:id="@+id/liProt"
-        android:layout_width="60dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
-        android:paddingHorizontal="12dp"
+        android:paddingHorizontal="2dp"
         android:gravity="center"
-        android:background="#159AB8"
+        android:background="#101838"
         android:text="TextView"
         android:weightSum="1"
-        android:textColor="#000"
+        android:textColor="#FFF"
         android:textSize="12dp" />
 
     <!--<TextView-->
@@ -58,15 +59,15 @@
 
     <TextView
         android:id="@+id/liCarb"
-        android:layout_width="60dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:paddingHorizontal="12dp"
-        android:background="#B2B093"
+        android:paddingHorizontal="2dp"
+        android:background="#2e1038"
         android:weightSum="1"
         android:text="TextView"
         android:textSize="12dp"
-        android:textColor="#000" />
+        android:textColor="#FFF" />
 
     <!--<TextView-->
         <!--android:id="@+id/f"-->
@@ -82,14 +83,14 @@
 
     <TextView
         android:id="@+id/liFat"
-        android:layout_width="60dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:paddingHorizontal="12dp"
-        android:background="#FFA6C9"
+        android:paddingHorizontal="2dp"
+        android:background="#3f0e24"
         android:weightSum="1"
         android:text="TextView"
         android:textSize="12dp"
-        android:textColor="#000" />
+        android:textColor="#FFF" />
 
 </LinearLayout>

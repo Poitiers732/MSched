@@ -1,6 +1,9 @@
 package com.example.wzdrodowski.msched;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.DatabaseHelper;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.example.wzdrodowski.msched.model.Food;
@@ -24,6 +28,8 @@ import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private SQLiteOpenHelper _openHelper;
 
     EditText foodTxt;
     EditText proteinTxt;   EditText carbsTxt;   EditText fatTxt;
@@ -42,10 +48,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView protTotal;
     TextView carbsTotal;
     TextView fatTotal;
+    TextView caloriesTotal;
 
     //list_item
     ListView foodItem;
     TextView liName;
+
+    int proteinCounter = 0;
+    int carbsCounter = 0;
+    int fatCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,22 +76,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         protTotal = (TextView) findViewById(R.id.protTotal);
         carbsTotal = (TextView) findViewById(R.id.carbsTotal);
         fatTotal = (TextView) findViewById(R.id.fatTotal);
+        caloriesTotal = (TextView) findViewById(R.id.caloriesTotal);
+        cldString = getCurrentDate();
 
-        //displayFood();
-        arrayList = new ArrayList<>();
-        List<Food> foodList = getAll();
-
-        for(int i=0; i<foodList.size(); i++){
-            food = foodList.get(i);
-            arrayList.add(food);
-        }
-
-        adapter = new Adapter(this, arrayList);
-
-        foodItem.setAdapter(adapter);
-        //
-
-        //List<Food>storedFood = Food.getAll();
+        refreshList();
 
         btnDeleteAll.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 calendar.setText(getPreviousDate());
+                refreshList();
             }
         });
 
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 calendar.setText(getNextDate());
+                refreshList();
             }
         });
 
@@ -108,11 +109,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 calendar.setText(getCurrentDate());
+                refreshList();
             }
         });
 
         calendar.setText(getCurrentDate());
+    }
 
+    public void refreshList() {
+        arrayList = new ArrayList<>();
+        List<Food> foodList = getAll();
+
+        for(int i=0; i<foodList.size(); i++){
+            try {
+                if(foodList.get(i).getPickedDate().contains(cldString)) {
+                food = foodList.get(i);
+                arrayList.add(food);
+                proteinCounter += food.getProteinAmount();
+                carbsCounter += food.getCarbsAmount();
+                fatCounter += food.getFatAmount();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        protTotal.setText(Integer.toString(proteinCounter));
+        carbsTotal.setText(Integer.toString(carbsCounter));
+        fatTotal.setText(Integer.toString(fatCounter));
+        int caloriesSum = 4*(proteinCounter + carbsCounter) + 9*fatCounter;
+        caloriesTotal.setText("KCAL: " + Integer.toString(caloriesSum));
+
+        proteinCounter = 0;
+        carbsCounter = 0;
+        fatCounter = 0;
+
+        adapter = new Adapter(this, arrayList);
+        foodItem.setAdapter(adapter);
     }
 
     public String getPreviousDate(){
@@ -147,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public static List<Food> getAll() {
+
         return new Select()
                 .from(Food.class)
                 .orderBy("food_name ASC")
@@ -162,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      public static List<Food> getByDateDesc() {
         return new Select()
                 .from(Food.class)
-                .orderBy("date DESC")
+                .orderBy("picked_date DESC, date DESC")
                 .execute();
     }
 
@@ -203,63 +237,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         hideKeyboard();
-        food = new Food();
-        boolean showToastWrongData = false;
-
-        if(!proteinTxt.getText().toString().matches("-?\\d+")){
-            showToastWrongData = true;
-            proteinTxt.setText("");
-        }
-
-        if(!carbsTxt.getText().toString().matches("-?\\d+")){
-            showToastWrongData = true;
-            carbsTxt.setText("");
-        }
-
-        if(!fatTxt.getText().toString().matches("-?\\d+")){
-            showToastWrongData = true;
-            fatTxt.setText("");
-        }
 
         if(foodTxt.getText().equals("") || proteinTxt.getText().toString().equals("") || carbsTxt.getText().equals("") || fatTxt.getText().equals("")) {
             Toast.makeText(getApplicationContext(), "Field can't be empty", Toast.LENGTH_SHORT).show();
-            showToastWrongData = false;
-        }
-
-        else if(showToastWrongData){
-            Toast.makeText(getApplicationContext(), "Wrong data, use numbers", Toast.LENGTH_SHORT).show();
         }
 
         else {
-            String food_name = foodTxt.getText().toString();
-            int protein = Integer.parseInt(proteinTxt.getText().toString());
-            int carbs = Integer.parseInt(carbsTxt.getText().toString());
-            int fat = Integer.parseInt(fatTxt.getText().toString());
-            food.setFoodName(food_name);
-            food.setProteinAmount(protein);
-            food.setCarbsAmount(carbs);
-            food.setFatAmount(fat);
-            food.setCurrentDate();
-            Toast.makeText(getApplicationContext(), "Inserted Successfully", Toast.LENGTH_SHORT).show();
-            foodTxt.setText("");    proteinTxt.setText("");    carbsTxt.setText("");    fatTxt.setText("");
+            try {
+                food = new Food();
+                String food_name = foodTxt.getText().toString();
+                int protein = Integer.parseInt(proteinTxt.getText().toString());
+                int carbs = Integer.parseInt(carbsTxt.getText().toString());
+                int fat = Integer.parseInt(fatTxt.getText().toString());
+                food.setFoodName(food_name);
+                food.setProteinAmount(protein);
+                food.setCarbsAmount(carbs);
+                food.setFatAmount(fat);
+                food.setCurrentDate();
+                food.setPickedDate(calendar.getText().toString());
+                Toast.makeText(getApplicationContext(), "Inserted Successfully", Toast.LENGTH_SHORT).show();
+                foodTxt.setText("");
+                proteinTxt.setText("");
+                carbsTxt.setText("");
+                fatTxt.setText("");
 
-            food.save();
+                food.save();
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
 
-        //displayFood();
-        arrayList = new ArrayList<>();
-        List<Food> foodList = getAll();
-
-        for(int i=0; i<foodList.size(); i++){
-            food = foodList.get(i);
-            arrayList.add(food);
-        }
-
-        adapter = new Adapter(this, arrayList);
-        foodItem.setAdapter(adapter);
-        //
-
+        refreshList();
         clearFocuses();
-
     }
 }
+
+
+
