@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.DatabaseHelper;
+import com.activeandroid.Model;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.example.wzdrodowski.msched.model.Food;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<Food> arrayList;
     ArrayAdapter<Food> adapter;
     Button btnDeleteAll;
+    Button btnDeleteDay;
     Calendar cld;
     String cldString;
     Button btnPrevious;
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnAddFood.setOnClickListener(this);
         foodItem = (ListView)findViewById(R.id.foodList);
         btnDeleteAll = (Button) findViewById(R.id.btnDeleteAll);
+        btnDeleteDay = (Button) findViewById(R.id.btnDeleteDay);
         btnPrevious = (Button) findViewById(R.id.btnPrevious); btnNext = (Button) findViewById(R.id.btnNext);
         calendar = (TextView) findViewById(R.id.calendar);
         protTotal = (TextView) findViewById(R.id.protTotal);
@@ -85,7 +88,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 deleteAll();
-                sortByName(view);
+                refreshList();
+            }
+        });
+
+        btnDeleteDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteAllDay(cldString);
+                refreshList();
             }
         });
 
@@ -191,6 +202,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return new Delete()
                 .from(Food.class)
                 .execute();
+    }
+
+        public static void deleteAllDay(String str) {
+            new Delete().from(Food.class).where("picked_date =?", str).execute();
     }
 
      public static List<Food> getByDateDesc() {

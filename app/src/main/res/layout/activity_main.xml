@@ -102,7 +102,7 @@
             android:onClick="sortByName" />
 
         <Button
-            android:id="@+id/btnDeleteFromDay"
+            android:id="@+id/btnDeleteDay"
             android:textSize="12dp"
             android:background="@color/colorPrimary"
             android:alpha="0.7"
@@ -110,7 +110,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="DELETE&#10;DAY" />
-
 
         <Button
             android:id="@+id/btnDeleteAll"
@@ -121,6 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="DELETE&#10;ALL" />
+
     </LinearLayout>
 
     <LinearLayout
