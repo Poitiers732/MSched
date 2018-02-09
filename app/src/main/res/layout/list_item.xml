@@ -21,6 +21,19 @@
         android:layout_weight="1"
         android:textColor="#FFF" />
 
+    <TextView
+        android:id="@+id/liKcal"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="2dp"
+        android:text="KCAL"
+        android:textSize="12dp"
+        android:gravity="center"
+        android:background="#909090"
+        android:alpha="1"
+        android:layout_weight="0"
+        android:textColor="#FFF" />
+
     <!--<TextView-->
         <!--android:id="@+id/p"-->
         <!--android:layout_width="wrap_content"-->

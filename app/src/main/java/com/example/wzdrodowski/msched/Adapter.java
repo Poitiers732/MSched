@@ -34,11 +34,13 @@ class Adapter extends ArrayAdapter<Food> {
         TextView liProt = (TextView) customView.findViewById(R.id.liProt);
         TextView liCarb = (TextView) customView.findViewById(R.id.liCarb);
         TextView liFat = (TextView) customView.findViewById(R.id.liFat);
+        TextView liKcal = (TextView) customView.findViewById(R.id.liKcal);
 
         liName.setText(singleFoodItem.getFoodName());
         liProt.setText(Integer.toString(singleFoodItem.getProteinAmount()));
         liCarb.setText(Integer.toString(singleFoodItem.getCarbsAmount()));
         liFat.setText(Integer.toString(singleFoodItem.getFatAmount()));
+        liKcal.setText(Integer.toString(4*(singleFoodItem.getProteinAmount()+singleFoodItem.getCarbsAmount())+9*singleFoodItem.getFatAmount()));
 
         return customView;
     }

@@ -4,11 +4,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +24,7 @@ import com.activeandroid.Model;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.example.wzdrodowski.msched.model.Food;
+import com.example.wzdrodowski.msched.model.OnSwipeTouchListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,6 +58,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //list_item
     ListView foodItem;
     TextView liName;
+    TextView liKcal;
+
+    Button btnSortByDate;
+    Button btnSortByName;
 
     int proteinCounter = 0;
     int carbsCounter = 0;
@@ -74,7 +81,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         foodItem = (ListView)findViewById(R.id.foodList);
         btnDeleteAll = (Button) findViewById(R.id.btnDeleteAll);
         btnDeleteDay = (Button) findViewById(R.id.btnDeleteDay);
-        btnPrevious = (Button) findViewById(R.id.btnPrevious); btnNext = (Button) findViewById(R.id.btnNext);
+        btnSortByDate = (Button) findViewById(R.id.btnSortByDate);
+        btnSortByName = (Button) findViewById(R.id.btnSortByName);
+        btnPrevious = (Button) findViewById(R.id.btnPrevious);
+        btnNext = (Button) findViewById(R.id.btnNext);
         calendar = (TextView) findViewById(R.id.calendar);
         protTotal = (TextView) findViewById(R.id.protTotal);
         carbsTotal = (TextView) findViewById(R.id.carbsTotal);
@@ -89,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 deleteAll();
                 refreshList();
+                Toast.makeText(getApplicationContext(), "All records deleted", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -97,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 deleteAllDay(cldString);
                 refreshList();
+                Toast.makeText(getApplicationContext(), "All records from "+cldString+" deleted", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -125,6 +137,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         calendar.setText(getCurrentDate());
+
+        foodItem.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+            public void onSwipeTop() {
+                Toast.makeText(MainActivity.this, "top", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeRight(AdapterView<?> arg0, View arg1, int arg2,
+                                     long id) {
+                Toast.makeText(MainActivity.this, "right " + Long.toString(id), Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeLeft() {
+                Toast.makeText(MainActivity.this, "left", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeBottom() {
+                Toast.makeText(MainActivity.this, "bottom", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+    }
+
+    public static void changeRecords(String str) {
+        new Delete().from(Food.class).where("picked_date =?", str).execute();
     }
 
     public void refreshList() {
@@ -149,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         carbsTotal.setText(Integer.toString(carbsCounter));
         fatTotal.setText(Integer.toString(fatCounter));
         int caloriesSum = 4*(proteinCounter + carbsCounter) + 9*fatCounter;
-        caloriesTotal.setText("KCAL: " + Integer.toString(caloriesSum));
+        caloriesTotal.setText("TOTAL KCAL:\n " + Integer.toString(caloriesSum));
 
         proteinCounter = 0;
         carbsCounter = 0;
@@ -157,6 +190,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         adapter = new Adapter(this, arrayList);
         foodItem.setAdapter(adapter);
+
+        btnSortByDate.setTextColor(Color.parseColor("#ffffff"));
+        btnSortByName.setTextColor(Color.parseColor("#ffffff"));
+        calendar.setTextColor(getResources().getColor(R.color.colorAccent));
     }
 
     public String getPreviousDate(){
@@ -191,7 +228,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public static List<Food> getAll() {
-
         return new Select()
                 .from(Food.class)
                 .orderBy("food_name ASC")
@@ -226,7 +262,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         adapter = new Adapter(this, arrayList);
         foodItem.setAdapter(adapter);
-    }
+
+        btnSortByName.setTextColor(getResources().getColor(R.color.colorAccent));
+        btnSortByDate.setTextColor(Color.parseColor("#ffffff"));
+        calendar.setTextColor(Color.parseColor("#ffffff"));
+      }
 
     public void sortByDate(View view) {
         arrayList = new ArrayList<>();
@@ -239,6 +279,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         adapter = new Adapter(this, arrayList);
         foodItem.setAdapter(adapter);
+
+        btnSortByDate.setTextColor(getResources().getColor(R.color.colorAccent));
+        btnSortByName.setTextColor(Color.parseColor("#ffffff"));
+        calendar.setTextColor(Color.parseColor("#ffffff"));
     }
 
     public void hideKeyboard(){

@@ -144,14 +144,15 @@
             android:id="@+id/calendar"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_weight="2"
-            android:fontFamily="@font/contrail_one"
+            android:fontFamily="@font/share_bold"
             android:gravity="center"
             android:padding="8dp"
+            android:alpha="0.5"
             android:text="6.6.6.2016"
             android:textColor="@color/colorAccent"
-            android:textSize="26dp"
-            android:layout_gravity="center"/>
+            android:textSize="26dp" />
 
         <Button
             android:id="@+id/btnNext"
@@ -175,7 +176,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#909090"
+            android:background="#484646"
             android:gravity="center"
             android:paddingHorizontal="12dp"
             android:text="Name"
@@ -229,6 +230,16 @@
             android:gravity="center"
             android:paddingHorizontal="12dp"
             android:text="Calories:"
+            android:textColor="#FFF"
+            android:textSize="12dp" />
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="#747474"
+            android:gravity="center"
+            android:paddingHorizontal="2dp"
+            android:text="KCAL"
             android:textColor="#FFF"
             android:textSize="12dp" />
 
