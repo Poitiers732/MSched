@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SQLiteOpenHelper _openHelper;
 
     EditText foodTxt;
-    EditText proteinTxt;   EditText carbsTxt;   EditText fatTxt;
+    EditText proteinTxt;   EditText carbsTxt;   EditText fatTxt;    EditText gramsTxt;
     Button btnAddFood;
     Food food;
     ListView foodListView;
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         proteinTxt = (EditText)findViewById(R.id.proteinTxt);
         carbsTxt = (EditText)findViewById(R.id.carbsTxt);
         fatTxt = (EditText)findViewById(R.id.fatTxt);
+        gramsTxt = (EditText)findViewById(R.id.gramsTxt);
         btnAddFood = (Button)findViewById(R.id.btnAddFood);
         btnAddFood.setOnClickListener(this);
         foodItem = (ListView)findViewById(R.id.foodList);
@@ -297,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         hideKeyboard();
 
-        if(foodTxt.getText().equals("") || proteinTxt.getText().toString().equals("") || carbsTxt.getText().equals("") || fatTxt.getText().equals("")) {
+        if(foodTxt.getText().equals("") || gramsTxt.getText().equals("") || proteinTxt.getText().toString().equals("") || carbsTxt.getText().equals("") || fatTxt.getText().equals("")) {
             Toast.makeText(getApplicationContext(), "Field can't be empty", Toast.LENGTH_SHORT).show();
         }
 
@@ -308,10 +309,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int protein = Integer.parseInt(proteinTxt.getText().toString());
                 int carbs = Integer.parseInt(carbsTxt.getText().toString());
                 int fat = Integer.parseInt(fatTxt.getText().toString());
+                int grams = Integer.parseInt(gramsTxt.getText().toString());
                 food.setFoodName(food_name);
-                food.setProteinAmount(protein);
-                food.setCarbsAmount(carbs);
-                food.setFatAmount(fat);
+                food.setGrams(grams);
+                food.setProteinAmount(protein*grams/100);
+                food.setCarbsAmount(carbs*grams/100);
+                food.setFatAmount(fat*grams/100);
                 food.setCurrentDate();
                 food.setPickedDate(calendar.getText().toString());
                 Toast.makeText(getApplicationContext(), "Inserted Successfully", Toast.LENGTH_SHORT).show();
@@ -319,6 +322,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 proteinTxt.setText("");
                 carbsTxt.setText("");
                 fatTxt.setText("");
+                gramsTxt.setText("");
 
                 food.save();
             } catch (NumberFormatException e) {

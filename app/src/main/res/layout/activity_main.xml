@@ -10,18 +10,38 @@
     android:background="@drawable/gradient_background"
     >
 
-    <EditText
-        android:id="@+id/foodTxt"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="ENTER FOOD NAME"
-        android:inputType="textPersonName"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:textColor="@color/colorAccent"
-        android:textColorHint="@color/colorPrimary"
-        />
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/foodTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="ENTER FOOD NAME"
+            android:inputType="textPersonName"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="@color/colorPrimary"
+            />
+
+        <EditText
+            android:id="@+id/gramsTxt"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textColor="@color/colorAccent"
+            android:layout_toRightOf="@+id/foodTxt"
+            android:layout_alignParentRight="true"
+            android:hint="GRAMS"
+            android:textColorHint="@color/colorPrimary"
+            android:layout_marginRight="0dp"
+            android:inputType="number" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

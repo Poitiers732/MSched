@@ -19,8 +19,12 @@ public class Food extends Model {
     @Column(name = "food_name")
     private String foodName;
 
+    @Column(name = "grams")
+    private int grams;
+
     @Column(name = "protein")
     private int proteinAmount;
+
 
     @Column(name = "carbs")
     private int carbsAmount;
@@ -35,6 +39,13 @@ public class Food extends Model {
 
     private String pickedDate;
 
+    public int getGrams() {
+        return grams;
+    }
+
+    public void setGrams(int grams) {
+        this.grams = grams;
+    }
 
     public void setPickedDate(String pickedDate) {
         this.pickedDate = pickedDate;
