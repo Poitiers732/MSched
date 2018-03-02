@@ -25,7 +25,6 @@ public class Food extends Model {
     @Column(name = "protein")
     private int proteinAmount;
 
-
     @Column(name = "carbs")
     private int carbsAmount;
 

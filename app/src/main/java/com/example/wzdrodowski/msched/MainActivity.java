@@ -145,7 +145,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             public void onSwipeRight(AdapterView<?> arg0, View arg1, int arg2,
                                      long id) {
-                Toast.makeText(MainActivity.this, "right " + Long.toString(id), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "right " + foodItem.getItemAtPosition(arg2).toString().trim(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "right " + food.getFoodName(), Toast.LENGTH_SHORT).show();
+
+                //deleteRecord();
             }
             public void onSwipeLeft() {
                 Toast.makeText(MainActivity.this, "left", Toast.LENGTH_SHORT).show();
@@ -243,6 +246,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         public static void deleteAllDay(String str) {
             new Delete().from(Food.class).where("picked_date =?", str).execute();
+    }
+
+            public static void deleteRecord(String str) {
+            new Delete().from(Food.class).where("food_name =?", str).execute();
     }
 
      public static List<Food> getByDateDesc() {
