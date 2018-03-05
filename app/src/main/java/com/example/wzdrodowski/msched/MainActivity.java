@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText proteinTxt;   EditText carbsTxt;   EditText fatTxt;    EditText gramsTxt;
     Button btnAddFood;
     Food food;
-    ListView foodListView;
     ArrayList<Food> arrayList;
     ArrayAdapter<Food> adapter;
     Button btnDeleteAll;
@@ -139,25 +138,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         calendar.setText(getCurrentDate());
 
-        foodItem.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
-            public void onSwipeTop() {
-                Toast.makeText(MainActivity.this, "top", Toast.LENGTH_SHORT).show();
+        foodItem.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v,int position, long id)
+            {
+                Food food = (Food)foodItem.getItemAtPosition(position);
+                //Toast.makeText(MainActivity.this, "1" + foodItem.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, food.getFoodName(), Toast.LENGTH_SHORT).show();
+                deleteRecord(food.getFoodName());
+                refreshList();
             }
-            public void onSwipeRight(AdapterView<?> arg0, View arg1, int arg2,
-                                     long id) {
-//                Toast.makeText(MainActivity.this, "right " + foodItem.getItemAtPosition(arg2).toString().trim(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this, "right " + food.getFoodName(), Toast.LENGTH_SHORT).show();
-
-                //deleteRecord();
-            }
-            public void onSwipeLeft() {
-                Toast.makeText(MainActivity.this, "left", Toast.LENGTH_SHORT).show();
-            }
-            public void onSwipeBottom() {
-                Toast.makeText(MainActivity.this, "bottom", Toast.LENGTH_SHORT).show();
-            }
-
         });
+
+//        foodItem.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
+//
+//            public void onSwipeTop() {
+//                Toast.makeText(MainActivity.this, "top", Toast.LENGTH_SHORT).show();
+//            }
+//            public void onSwipeRight(AdapterView<?> adapter, View v, int position,
+//                                     long id) {
+//
+//                Food food = (Food)foodItem.getItemAtPosition(position);
+//                //Toast.makeText(MainActivity.this, "1" + foodItem.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, food.getFoodName(), Toast.LENGTH_SHORT).show();
+//                deleteRecord(food.getFoodName());
+//                refreshList();
+//
+//            }
+//            public void onSwipeLeft() {
+//                Toast.makeText(MainActivity.this, "left", Toast.LENGTH_SHORT).show();
+//            }
+//            public void onSwipeBottom() {
+//                Toast.makeText(MainActivity.this, "bottom", Toast.LENGTH_SHORT).show();
+//            }
+//
+//        });
     }
 
     public static void changeRecords(String str) {
